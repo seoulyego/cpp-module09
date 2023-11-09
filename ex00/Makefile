@@ -1,5 +1,5 @@
-NAME				:=	btc
-PROJECT_NAME		:=	BTC
+NAME				:=	bitcoin_exchange
+PROJECT_NAME		:=	BITCOIN_EXCHANGE
 
 OBJ_DIR				:=	./.obj/
 CACHE_DIR			:=	./.cache/
@@ -10,6 +10,7 @@ MJFLAGS				 =	-MJ $@.part.json
 RM					:=	rm -rf
 
 SRC_FILES			:=	$(addsuffix .cpp,			\
+							BitcoinExchange			\
 							main					\
 						)
 OBJ_FILES			:=	$(SRC_FILES:.cpp=.o)

@@ -1,27 +1,12 @@
 #include "BitcoinExchange.hpp"
-#include <_ctype.h>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
+#include <exception>
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include <string>
-#include <utility>
 
-BitcoinExchange::BitcoinExchange() {}
+std::map<std::string, float> BitcoinExchange::_bitcoinDB;
 
-BitcoinExchange::BitcoinExchange(const BitcoinExchange& object) { *this = object; }
-
-BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange& object) {
-	if (this != &object)
-		return *this;
-	return *this;
-}
-
-BitcoinExchange::~BitcoinExchange() {}
-
-const std::map<std::string, float>& BitcoinExchange::getBtcDB() const { return _bitcoinDB; }
+const std::map<std::string, float>& BitcoinExchange::getBtcDB() { return BitcoinExchange::_bitcoinDB; }
 
 bool BitcoinExchange::validateDate(std::string dateStr) {
 	if (dateStr.length() != 10)
@@ -30,21 +15,27 @@ bool BitcoinExchange::validateDate(std::string dateStr) {
 	std::istringstream dateStream(dateStr);
 	std::string date;
 
-	std::getline(dateStream, date, '-');
 	int year;
-	std::istringstream(date) >> year;
+	int month;
+	int day;
+	for (int i = 0; i < 3; i++) {
+		std::getline(dateStream, date, '-');
+		switch (i) {
+			case 0:
+				std::istringstream(date) >> year;
+				break ;
+			case 1:
+				std::istringstream(date) >> month;
+				break ;
+			case 2:
+				std::istringstream(date) >> day;
+		}
+	}
+
 	if (year < 1000 || year > 2023)
 		return false;
-
-	std::getline(dateStream, date, '-');
-	int month;
-	std::istringstream(date) >> month;
 	if (month < 1 || month > 12)
 		return false;
-
-	std::getline(dateStream, date, '-');
-	int day;
-	std::istringstream(date) >> day;
 	if (day < 1 || day > 31 ||
 		((month == 4 || month == 6 || month == 9 || month == 11) && day == 31))
 		return false;
@@ -80,24 +71,27 @@ void BitcoinExchange::openCsvFile() {
 		throw OpenFileException();
 	std::string buffer;
 	if (std::getline(infile, buffer).eof() == true)
-		throw EmptyFileException();
+		throw EmptyDataException();
 	if (buffer != "date,exchange_rate")
-		throw BadInputException(buffer);
+		throw BadFormatException(buffer);
 	while (std::getline(infile, buffer).eof() == false) {
 		int year;
 		int month;
 		int day;
 		float rate;
-		if (std::sscanf(buffer.c_str(), "%d-%d-%d,%f", &year, &month, &day, &rate) != 4)
-			throw BadInputException(buffer);
+		if (std::sscanf(buffer.c_str(), "%d-%d-%d,%f", &year, &month, &day, &rate) != 4) {
+			throw BadFormatException(buffer);
+		}
 		std::string date = buffer.substr(0, buffer.find(','));
 		if (validateDate(date) == false)
-			throw BadInputException(buffer);
+			throw BadFormatException(buffer);
 		std::string inputStr = buffer.substr(buffer.find(',') + 1);
 		if (validateValue(inputStr) == false)
-			throw BadInputException(buffer);
+			throw BadFormatException(buffer);
 		_bitcoinDB.insert(std::pair<std::string, float>(date, rate));
 	}
+	if (_bitcoinDB.empty())
+		throw EmptyDataException();
 	infile.close();
 }
 
@@ -109,42 +103,62 @@ void BitcoinExchange::openInputFile(char *fpath) {
 
 	std::string buffer;
 	if (std::getline(infile, buffer).eof() == true)
-		throw EmptyFileException();
+		throw EmptyDataException();
 	if (buffer != "date | value")
-		throw BadInputException(buffer);
+		throw BadFormatException(buffer);
 	const std::string delim = " | ";
 	while (std::getline(infile, buffer).eof() == false) {
 		int year;
 		int month;
 		int day;
 		float value;
-		if (std::sscanf(buffer.c_str(), "%d-%d-%d | %f", &year, &month, &day, &value))
-			throw BadInputException(buffer);
+		if (std::sscanf(buffer.c_str(), "%d-%d-%d | %f", &year, &month, &day, &value) != 4) {
+			std::cout <<  badInputErrorMessage(buffer) << std::endl;
+			continue;
+		}
 		std::string date = buffer.substr(0, buffer.find(delim));
-		if (validateDate(date) == false)
-			throw BadInputException(date);
+		if (validateDate(date) == false) {
+			std::cout <<  badInputErrorMessage(date) << std::endl;
+			continue;
+		}
 		std::string valueStr = buffer.substr(buffer.find(delim) + delim.length());
-		if (validateValue(valueStr) == false)
-			throw BadInputException(buffer);
+		if (validateValue(valueStr) == false) {
+			std::cout <<  badInputErrorMessage(buffer) << std::endl;
+			continue;
+		}
 		value = std::strtof(valueStr.c_str(), NULL);
 		std::map<std::string, float>::iterator iter = _bitcoinDB.lower_bound(date);
-		if (iter == _bitcoinDB.begin() && iter->first != date)
-			throw ;
-		else if (iter == _bitcoinDB.end())
+		if (iter == _bitcoinDB.begin() && iter->first != date) {
+			std::cout << "no data" << std::endl;
+			continue ;
+		}
+		else if (iter == _bitcoinDB.end() || iter->first != date)
 			iter--;
 		std::cout << date << " => " << value << " = " << value * iter->second << std::endl;
 	}
 }
 
+std::string BitcoinExchange::errorMessage(std::string inputStr) {
+	return "Error: " + inputStr;
+}
+
+std::string BitcoinExchange::badInputErrorMessage(std::string inputStr) {
+	return "Error: Bad input => " + inputStr;
+}
+
+std::string BitcoinExchange::badFormatErrorMessage(std::string inputStr) {
+	return "Error: Bad format data => " + inputStr;
+}
+
 const char *BitcoinExchange::OpenFileException::what() const throw() { return "Error: Could not open file."; }
 
-const char *BitcoinExchange::EmptyFileException::what() const throw() { return "Error: No data in file."; }
+const char *BitcoinExchange::EmptyDataException::what() const throw() { return "Error: No data in file."; }
 
-BitcoinExchange::BadInputException::BadInputException(const std::string& inputStr) { _message = "Error: Bad input => " + inputStr; }
+BitcoinExchange::BadFormatException::BadFormatException(const std::string& inputStr) { _message = "Error: Bad format data => " + inputStr; }
 
-BitcoinExchange::BadInputException::~BadInputException() throw() {}
+BitcoinExchange::BadFormatException::~BadFormatException() throw() {}
 
-const char *BitcoinExchange::BadInputException::what() const throw() { return _message.c_str(); }
+const char *BitcoinExchange::BadFormatException::what() const throw() { return _message.c_str(); }
 
 const char *BitcoinExchange::NegativeNumberException::what() const throw() { return "Error: Not a positive number."; }
 

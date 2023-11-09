@@ -1,43 +1,41 @@
-#ifndef BTCEXCHANGE_HPP
-# define BTCEXCHANGE_HPP
+#ifndef BITCOINEXCHANGE_HPP
+# define BITCOINEXCHANGE_HPP
 
 # include <string>
 # include <map>
-# include <stdexcept>
 
 class BitcoinExchange {
 	public:
-		BitcoinExchange();
-		BitcoinExchange(const BitcoinExchange& object);
-		BitcoinExchange& operator=(const BitcoinExchange& object);
-		~BitcoinExchange();
+		static const std::map<std::string, float>& getBtcDB();
 
-		const std::map<std::string, float>& getBtcDB() const;
+		static bool validateDate(std::string date);
+		static bool validateValue(std::string value);
+		static void openCsvFile();
+		static bool validateInput(std::string inputStr);
+		static void openInputFile(char *fpath);
 
-		bool validateDate(std::string date);
-		bool validateValue(std::string value);
-		void openCsvFile();
-		bool validateInput(std::string inputStr);
-		void openInputFile(char *fpath);
+		static std::string errorMessage(std::string inputStr);
+		static std::string badInputErrorMessage(std::string inputStr);
+		static std::string badFormatErrorMessage(std::string inputStr);
 
 		class OpenFileException : public std::exception {
 			public:
 				const char *what() const throw();
 		};
-		class EmptyFileException : public std::exception {
+		class EmptyDataException : public std::exception {
 			public:
 				const char *what() const throw();
 		};
-		class BadInputException : public std::exception {
+		class BadFormatException : public std::exception {
 			public:
-				BadInputException(const std::string& inputStr);
-				~BadInputException() throw();
+				BadFormatException(const std::string& inputStr);
+				~BadFormatException() throw();
 
 				const char *what() const throw();
 			private:
 				std::string _message;
 
-				BadInputException();
+				BadFormatException();
 		};
 		class InvalidDateException : public std::exception {
 			public:
@@ -53,7 +51,12 @@ class BitcoinExchange {
 		};
 
 	private:
-		std::map<std::string, float> _bitcoinDB;
+		static std::map<std::string, float> _bitcoinDB;
+
+		BitcoinExchange();
+		BitcoinExchange(const BitcoinExchange& object);
+		BitcoinExchange& operator=(const BitcoinExchange& object);
+		~BitcoinExchange();
 };
 
-#endif  // BTCEXCHANGE_HPP
+#endif  // BITCOINEXCHANGE_HPP

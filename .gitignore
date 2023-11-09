@@ -36,7 +36,10 @@
 .vscode/
 .obj/
 .cache/
+cpp_09/
 *test*
 *.csv
 *.tgz
 *.txt
+
+bitcoin_exchange
