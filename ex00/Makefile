@@ -1,5 +1,5 @@
-NAME				:=	bitcoin_exchange
-PROJECT_NAME		:=	BITCOIN_EXCHANGE
+NAME				:=	btc
+PROJECT_NAME		:=	BTC
 
 OBJ_DIR				:=	./.obj/
 CACHE_DIR			:=	./.cache/
