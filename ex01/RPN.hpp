@@ -2,7 +2,7 @@
 # define RPN_HPP
 
 # include <stack>
-# include <string>
+# include <iostream>
 
 class RPN {
 	public:

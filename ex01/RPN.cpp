@@ -1,13 +1,8 @@
 #include "RPN.hpp"
-#include <cctype>
-#include <iostream>
-#include <sstream>
-#include <stdexcept>
-#include <sys/_types/_size_t.h>
 
 static double add(double a, double b) { return a + b; }
 
-static double minus(double a, double b) { return a - b; }
+static double sub(double a, double b) { return a - b; }
 
 static double multiple(double a, double b) { return a * b; }
 
@@ -47,20 +42,20 @@ bool RPN::isOperator(const char c) {
 void RPN::calculate() {
 	while (!_expression.empty()) {
 		if (std::isdigit(_expression[0]))
-			_stack.push(_expression[0]);
+			_stack.push(_expression[0] - '0');
 		else if (isOperator(_expression[0])) {
 			if (_stack.size() < 2)
 				throw std::runtime_error("Error");
 
-			double a = _stack.top();
-			_stack.pop();
 			double b = _stack.top();
+			_stack.pop();
+			double a = _stack.top();
 			_stack.pop();
 
 			if (_expression[0] == '+')
 				_stack.push(add(a, b));
 			else if (_expression[0] == '-')
-				_stack.push(minus(a, b));
+				_stack.push(sub(a, b));
 			else if (_expression[0] == '*')
 				_stack.push(multiple(a, b));
 			else
@@ -79,6 +74,6 @@ void RPN::print() {
 	std::cout << _stack.top() << std::endl;
 }
 
-void RPN::printStack() {
-	std::cout << "stack: " << _stack << std::endl;
-}
+// void RPN::printStack() {
+	// std::cout << "stack: " << _stack << std::endl;
+// }
