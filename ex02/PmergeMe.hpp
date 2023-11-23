@@ -8,7 +8,9 @@
 
 class PmergeMe {
 	public:
+		static void mergeInsertSortVector();
 		static void sortVector();
+		static void mergeInsertSortList();
 		static void sortList();
 
 		static void printUnsorted();
@@ -20,7 +22,7 @@ class PmergeMe {
 	private:
 		static std::vector<int> _vectorSequence;
 		static std::list<int> _listSequence;
-		static double _vertorTime;
+		static double _vectorTime;
 		static double _listTime;
 
 		PmergeMe();
