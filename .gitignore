@@ -33,6 +33,7 @@
 
 # My files
 .DS_Store
+.zed/
 .vscode/
 .obj/
 .cache/
@@ -44,3 +45,4 @@ cpp_09/
 
 btc
 RPN
+PmergeMe
