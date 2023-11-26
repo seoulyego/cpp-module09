@@ -8,16 +8,25 @@
 
 class PmergeMe {
 	public:
-		static void mergeInsertSortVector();
-		static void sortVector();
-		static void mergeInsertSortList();
-		static void sortList();
+		static const std::vector<int>& getVectorSequence();
+		static const std::list<int>& getListSequence();
+		static void setSequence(std::vector<int> sequence);
+
+		static std::vector<std::pair<int, int> > makePairVector();
+		static void mergePairVector(std::vector<std::pair<int, int> >& pairVector, int left, int right);
+		static void mergeVector(std::vector<std::pair<int, int> >& pairVector, int left, int mid, int right);
+		static size_t getJacobsthalNumber(size_t index);
+		static size_t binarySearchVector(std::vector<int> sortedVector, int left, int right, int key);
+		static void mergeInsertionSortVector();
+
+		static void mergePairList();
+		static void mergeInsertionSortList();
 
 		static void printUnsorted();
 		static void printSorted();
 		static void printVectorTime();
 		static void printListTime();
-		static void print();
+		static void printIsAscending(std::vector<int> sequence);
 
 	private:
 		static std::vector<int> _vectorSequence;

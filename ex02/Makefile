@@ -6,6 +6,7 @@ CACHE_DIR			:=	./.cache/
 
 CC					:=	c++
 CXXFLAGS			:=	-Wall -Wextra -Werror -std=c++98
+DBFLAGS				:=	-g
 MJFLAGS				 =	-MJ $@.part.json
 RM					:=	rm -rf
 
@@ -22,7 +23,8 @@ OBJ_FOLDER			:=	$(OBJ_DIR)
 PRINT				:=	$(PROJECT_NAME)
 
 ifdef	DEBUG
-		DBFLAGS		:=	-g -fsanitize=address
+		DBFLAGS		+=	-fsanitize=address
+		NAME		:=	$(addsuffix _debug, $(NAME))
 		PRINT		:=	$(addsuffix _DEBUG, $(PRINT))
 endif
 
@@ -44,10 +46,6 @@ $(OBJ_FOLDER)%.o	:	%.cpp
 	@$(CC) $(CXXFLAGS) $(DBFLAGS) -c -o $@ $<
 #	@$(CC) $(CXXFLAGS) $(DBFLAGS) $(MJFLAGS) -c -o $@ $<
 
-.PHONY	:	debug
-debug	:
-	@make DEBUG=1 all
-
 .PHONY	:	clean
 clean	:
 	@$(RM) $(OBJ_DIR) $(CACHE_DIR) $(JSON_FILES)
@@ -57,6 +55,14 @@ clean	:
 fclean	:	clean
 	@$(RM) $(NAME)
 	@echo "\033[91m       FCLEAN DONE       \033[0m"
+
+.PHONY	:	debug
+debug	:
+	@make DEBUG=1 all
+
+.PHONY	:	rebug
+rebug	:	clean
+	@make debug
 
 .PHONY	:	re
 re		:	fclean

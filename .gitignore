@@ -42,6 +42,7 @@ cpp_09/
 *.csv
 *.tgz
 *.txt
+*_debug
 
 btc
 RPN
