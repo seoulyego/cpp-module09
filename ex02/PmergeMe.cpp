@@ -132,7 +132,6 @@ void PmergeMe::mergeInsertionSortVector() {
 	}
 	clock_t finishTime = clock();
 	_vectorTime = (finishTime - startTime) * 1000;
-	// printIsAscending(_vectorSequence);
 }
 
 void PmergeMe::mergePairList() {
@@ -177,6 +176,6 @@ void PmergeMe::printListTime() {
 	" elements with std::list : " << _listTime << " ms" << std::endl;
 }
 
-// void PmergeMe::printIsAscending(std::vector<int> sequence) {
-	// std::cout << "Ascending: " << std::boolalpha << std::is_sorted(sequence.begin(), sequence.end()) << std::endl;
-// }
+void PmergeMe::printIsAscending() {
+	std::cout << "Ascending: " << std::boolalpha << std::is_sorted(_vectorSequence.begin(), _vectorSequence.end()) << std::endl;
+}

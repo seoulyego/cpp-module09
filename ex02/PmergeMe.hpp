@@ -26,7 +26,7 @@ class PmergeMe {
 		static void printSorted();
 		static void printVectorTime();
 		static void printListTime();
-		// static void printIsAscending(std::vector<int> sequence);
+		static void printIsAscending();
 
 	private:
 		static std::vector<int> _vectorSequence;

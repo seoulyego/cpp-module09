@@ -5,7 +5,7 @@ OBJ_DIR				:=	./.obj/
 CACHE_DIR			:=	./.cache/
 
 CC					:=	c++
-CXXFLAGS			:=	-Wall -Wextra -Werror -std=c++98
+CXXFLAGS			:=	-Wall -Wextra -Werror -std=c++11
 DBFLAGS				:=	-g
 MJFLAGS				 =	-MJ $@.part.json
 RM					:=	rm -rf

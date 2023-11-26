@@ -37,8 +37,9 @@ static std::vector<int> validateInput(int argc, char *argv[]) {
 			inputData.push_back(number);
 		}
 	}
-    if (inputData.empty())
+    if (inputData.size() < 1) {
         throw std::runtime_error("Error: empty input data");
+    }
 	return inputData;
 }
 
@@ -49,6 +50,7 @@ int main(int argc, char *argv[]) {
         PmergeMe::printUnsorted();
         PmergeMe::mergeInsertionSortVector();
         PmergeMe::printSorted();
+        PmergeMe::printIsAscending();
         PmergeMe::printVectorTime();
         // PmergeMe::mergeInsertionSortList();
         // PmergeMe::printListTime();
