@@ -1,4 +1,5 @@
 #include "PmergeMe.hpp"
+#include <algorithm>
 #include <iomanip>
 #include <iostream>
 
@@ -14,7 +15,6 @@ const std::vector<int>& PmergeMe::getVectorSequence() {
 const std::list<int>& PmergeMe::getListSequence() {
 	return _listSequence;
 }
-
 
 void PmergeMe::setSequence(std::vector<int> sequence) {
 	_vectorSequence = sequence;
@@ -132,7 +132,7 @@ void PmergeMe::mergeInsertionSortVector() {
 	}
 	clock_t finishTime = clock();
 	_vectorTime = (finishTime - startTime) * 1000;
-	printIsAscending(_vectorSequence);
+	// printIsAscending(_vectorSequence);
 }
 
 void PmergeMe::mergePairList() {
@@ -177,6 +177,6 @@ void PmergeMe::printListTime() {
 	" elements with std::list : " << _listTime << " ms" << std::endl;
 }
 
-void PmergeMe::printIsAscending(std::vector<int> sequence) {
-	std::cout << "Ascending: " << std::boolalpha << std::is_sorted(sequence.begin(), sequence.end()) << std::endl;
-}
+// void PmergeMe::printIsAscending(std::vector<int> sequence) {
+	// std::cout << "Ascending: " << std::boolalpha << std::is_sorted(sequence.begin(), sequence.end()) << std::endl;
+// }
