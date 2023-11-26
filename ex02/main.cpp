@@ -1,12 +1,9 @@
 #include "PmergeMe.hpp"
-#include <limits>
-#include <algorithm>
 #include <sstream>
-#include <iostream>
 
-void i_wanna_go_home() {
-    system("leaks $PPID");
-}
+// static void i_wanna_go_home() {
+    // system("leaks $PPID");
+// }
 
 static bool validateNumber(std::string str) {
     char *endptr = NULL;
@@ -32,8 +29,8 @@ static std::vector<int> validateInput(int argc, char *argv[]) {
 			if (!validateNumber(inputBuffer))
 				throw std::runtime_error("Error: invalid input number");
 			int number = static_cast<int>(std::strtol(inputBuffer.c_str(), NULL, 10));
-			// if (std::find(inputData.begin(), inputData.end(), number) != inputData.end())
-			// 	throw std::runtime_error("Error: duplicate input number");
+			if (std::find(inputData.begin(), inputData.end(), number) != inputData.end())
+				throw std::runtime_error("Error: duplicate input number");
 			inputData.push_back(number);
 		}
 	}
@@ -50,10 +47,11 @@ int main(int argc, char *argv[]) {
         PmergeMe::printUnsorted();
         PmergeMe::mergeInsertionSortVector();
         PmergeMe::printSorted();
-        PmergeMe::printIsAscending();
+        // PmergeMe::printIsAscendingVector();
         PmergeMe::printVectorTime();
-        // PmergeMe::mergeInsertionSortList();
-        // PmergeMe::printListTime();
+        PmergeMe::mergeInsertionSortDeque();
+        // PmergeMe::printIsAscendingDeque();
+        PmergeMe::printDequeTime();
     } catch (std::exception &e) {
         std::cout << e.what() << std::endl;
         return 1;

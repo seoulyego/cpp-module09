@@ -1,38 +1,40 @@
 #ifndef PMERGEME_HPP
 # define PMERGEME_HPP
 
-# include <string>
-# include <list>
+# include <deque>
 # include <vector>
-# include <ctime>
+# include <iostream>
 
 class PmergeMe {
 	public:
-		static const std::vector<int>& getVectorSequence();
-		static const std::list<int>& getListSequence();
 		static void setSequence(std::vector<int> sequence);
+		static size_t getJacobsthalNumber(size_t index);
 
 		static std::vector<std::pair<int, int> > makePairVector();
-		static void mergePairVector(std::vector<std::pair<int, int> >& pairVector, int left, int right);
 		static void mergeVector(std::vector<std::pair<int, int> >& pairVector, int left, int mid, int right);
-		static size_t getJacobsthalNumber(size_t index);
-		static size_t binarySearchVector(std::vector<int> sortedVector, int left, int right, int key);
+		static void mergePairVector(std::vector<std::pair<int, int> >& pairVector, int left, int right);
+		static size_t binarySearchVector(std::vector<int> sorted, int left, int right, int key);
 		static void mergeInsertionSortVector();
 
-		static void mergePairList();
-		static void mergeInsertionSortList();
+		static std::deque<std::pair<int, int> > makePairDeque();
+		static void mergeDeque(std::deque<std::pair<int, int> >& pairVector, int left, int mid, int right);
+		static void mergePairDeque(std::deque<std::pair<int, int> >& pairVector, int left, int right);
+		static size_t binarySearchDeque(std::deque<int> sorted, int left, int right, int key);
+		static void mergeInsertionSortDeque();
 
 		static void printUnsorted();
 		static void printSorted();
 		static void printVectorTime();
-		static void printListTime();
-		static void printIsAscending();
+		static void printDequeTime();
+
+		// static void printIsAscendingVector();
+		// static void printIsAscendingDeque(); 
 
 	private:
 		static std::vector<int> _vectorSequence;
-		static std::list<int> _listSequence;
+		static std::deque<int> _dequeSequence;
 		static double _vectorTime;
-		static double _listTime;
+		static double _dequeTime;
 
 		PmergeMe();
 		PmergeMe(PmergeMe const &object);
