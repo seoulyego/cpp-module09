@@ -17,8 +17,8 @@ class PmergeMe {
 		static void mergeInsertionSortVector();
 
 		static std::deque<std::pair<int, int> > makePairDeque();
-		static void mergeDeque(std::deque<std::pair<int, int> >& pairVector, int left, int mid, int right);
-		static void mergePairDeque(std::deque<std::pair<int, int> >& pairVector, int left, int right);
+		static void mergeDeque(std::deque<std::pair<int, int> >& pairDeque, int left, int mid, int right);
+		static void mergePairDeque(std::deque<std::pair<int, int> >& pairDeque, int left, int right);
 		static std::deque<int>::size_type binarySearchDeque(std::deque<int> sorted, int left, int right, int key);
 		static void mergeInsertionSortDeque();
 
