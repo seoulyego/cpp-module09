@@ -73,7 +73,3 @@ void RPN::calculate() {
 void RPN::print() {
 	std::cout << _stack.top() << std::endl;
 }
-
-// void RPN::printStack() {
-	// std::cout << "stack: " << _stack << std::endl;
-// }

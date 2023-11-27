@@ -11,7 +11,6 @@ class RPN {
 		static void trimExpression();
 		static void calculate();
 		static void print();
-		static void printStack();
 
 	private:
 		static std::string _expression;
