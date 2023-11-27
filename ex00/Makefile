@@ -6,6 +6,7 @@ CACHE_DIR			:=	./.cache/
 
 CC					:=	c++
 CXXFLAGS			:=	-Wall -Wextra -Werror -std=c++98
+DBFLAGS				:=	-g
 MJFLAGS				 =	-MJ $@.part.json
 RM					:=	rm -rf
 
@@ -22,7 +23,8 @@ OBJ_FOLDER			:=	$(OBJ_DIR)
 PRINT				:=	$(PROJECT_NAME)
 
 ifdef	DEBUG
-		DBFLAGS		:=	-g -fsanitize=address
+		DBFLAGS		+=	-fsanitize=address
+		NAME		:=	$(addsuffix _debug, $(NAME))
 		PRINT		:=	$(addsuffix _DEBUG, $(PRINT))
 endif
 
@@ -35,7 +37,7 @@ $(OBJ_FOLDER)	:
 	fi
 
 $(NAME)	:	$(OBJS)
-	@$(CC) $(CXXFLAGS) $(DBFLAGS) -o $@ $^
+	$(CC) $(CXXFLAGS) $(DBFLAGS) -o $@ $^
 	@echo "\033[01;32m         SUCCESS!        \033[0m"
 #	@(printf [ && find . -name "*.part.json" | xargs cat && printf ]) > $(JSON_FILES);
 
