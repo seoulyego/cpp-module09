@@ -292,7 +292,7 @@ void PmergeMe::printVectorTime() {
 
 void PmergeMe::printDequeTime() {
 	std::cout << "Time to process a range of " << _dequeSequence.size() <<
-	" elements with std::list : " << _dequeTime / CLOCKS_PER_SEC << " ms" << std::endl;
+	" elements with std::deque : " << _dequeTime / CLOCKS_PER_SEC << " ms" << std::endl;
 }
 
 void PmergeMe::sortMe(int argc, char *argv[]) {
