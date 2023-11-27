@@ -13,19 +13,21 @@ class PmergeMe {
 		static std::vector<std::pair<int, int> > makePairVector();
 		static void mergeVector(std::vector<std::pair<int, int> >& pairVector, int left, int mid, int right);
 		static void mergePairVector(std::vector<std::pair<int, int> >& pairVector, int left, int right);
-		static size_t binarySearchVector(std::vector<int> sorted, int left, int right, int key);
+		static std::deque<int>::size_type binarySearchVector(std::vector<int> sorted, int left, int right, int key);
 		static void mergeInsertionSortVector();
 
 		static std::deque<std::pair<int, int> > makePairDeque();
 		static void mergeDeque(std::deque<std::pair<int, int> >& pairVector, int left, int mid, int right);
 		static void mergePairDeque(std::deque<std::pair<int, int> >& pairVector, int left, int right);
-		static size_t binarySearchDeque(std::deque<int> sorted, int left, int right, int key);
+		static std::deque<int>::size_type binarySearchDeque(std::deque<int> sorted, int left, int right, int key);
 		static void mergeInsertionSortDeque();
 
 		static void printUnsorted();
 		static void printSorted();
 		static void printVectorTime();
 		static void printDequeTime();
+
+		static void sortMe(int argc, char *argv[]);
 
 		// static void printIsAscendingVector();
 		// static void printIsAscendingDeque(); 

@@ -1,9 +1,8 @@
 #ifndef BITCOINEXCHANGE_HPP
 # define BITCOINEXCHANGE_HPP
 
-# include <string>
 # include <map>
-#include <utility>
+# include <iostream>
 
 class BitcoinExchange {
 	public:
@@ -11,9 +10,9 @@ class BitcoinExchange {
 
 		static bool validateDate(std::string date);
 		static bool validateValue(std::string value);
-		static void checkCsvBuffer(const std::string& buffer, const std::string& delim, std::pair<std::string, float> *dataPair);
+		static void checkCsvFile(const std::string& buffer, const std::string& delim, std::pair<std::string, float> *dataPair);
 		static void loadCsv();
-		static void checkInputBuffer(const std::string& buffer, const std::string& delim, std::pair<std::string, float> *inputPair);
+		static void checkInputFile(const std::string& buffer, const std::string& delim, std::pair<std::string, float> *inputPair);
 		static void printBitcoin(std::pair<std::string, float> inputPair);
 		static void processInputFile(char *fpath);
 

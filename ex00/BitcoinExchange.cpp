@@ -1,11 +1,6 @@
 #include "BitcoinExchange.hpp"
-#include <exception>
 #include <fstream>
 #include <sstream>
-#include <iostream>
-#include <stdexcept>
-#include <string>
-#include <utility>
 
 std::map<std::string, float> BitcoinExchange::_bitcoinDB;
 
@@ -65,7 +60,7 @@ bool BitcoinExchange::validateValue(std::string value) {
 	return true;
 }
 
-void BitcoinExchange::checkCsvBuffer(const std::string& buffer, const std::string& delim, std::pair<std::string, float> *dataPair) {
+void BitcoinExchange::checkCsvFile(const std::string& buffer, const std::string& delim, std::pair<std::string, float> *dataPair) {
 	int year;
 	int month;
 	int day;
@@ -94,7 +89,7 @@ void BitcoinExchange::loadCsv() {
 	const std::string delim = ",";
 	while (std::getline(infile, buffer).eof() == false) {
 		std::pair<std::string, float> dataPair;
-		checkCsvBuffer(buffer, delim, &dataPair);
+		checkCsvFile(buffer, delim, &dataPair);
 		_bitcoinDB.insert(dataPair);
 	}
 	if (_bitcoinDB.empty())
@@ -102,7 +97,7 @@ void BitcoinExchange::loadCsv() {
 	infile.close();
 }
 
-void BitcoinExchange::checkInputBuffer(const std::string& buffer, const std::string& delim, std::pair<std::string, float> *inputPair) {
+void BitcoinExchange::checkInputFile(const std::string& buffer, const std::string& delim, std::pair<std::string, float> *inputPair) {
 	int year;
 	int month;
 	int day;
@@ -135,7 +130,7 @@ void BitcoinExchange::processInputFile(char *fpath) {
 	while (std::getline(infile, buffer).eof() == false) {
 		try {
 			std::pair<std::string, float> inputPair;
-			checkInputBuffer(buffer, delim, &inputPair);
+			checkInputFile(buffer, delim, &inputPair);
 			printBitcoin(inputPair);
 		} catch (std::exception& e) {
 			std::cout << e.what() << std::endl;

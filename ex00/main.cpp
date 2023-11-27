@@ -1,8 +1,11 @@
 #include "BitcoinExchange.hpp"
-#include <fstream>
-#include <iostream>
+
+// static void i_wanna_go_home() {
+    // system("leaks $PPID");
+// }
 
 int main(int argc, char *argv[]) {
+	// atexit(i_wanna_go_home);
 	if (argc != 2) {
 		std::cout << BitcoinExchange::generalErrorMessage("Could not open file.") << std::endl;
 		return 1;

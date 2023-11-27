@@ -1,9 +1,45 @@
 #include "PmergeMe.hpp"
+#include <sstream>
 
 std::vector<int> PmergeMe::_vectorSequence;
 std::deque<int> PmergeMe::_dequeSequence;
 double PmergeMe::_vectorTime;
 double PmergeMe::_dequeTime;
+
+static bool validateNumber(std::string str) {
+    char *endptr = NULL;
+    long value = std::strtol(str.c_str(), &endptr, 10);
+    if (value == 0 && !std::isdigit(str[0]))
+        return false;
+    if (*endptr != '\0')
+        return false;
+    if (value <= 0 || value > std::numeric_limits<int>::max())
+        return false;
+    return true;
+}
+
+static std::vector<int> validateInput(int argc, char *argv[]) {
+	if (argc < 2)
+		throw std::runtime_error("Error: need more parameters");
+	std::vector<int> inputData;
+	for (int i = 1; i < argc; i++) {
+		std::istringstream ss(argv[i]);
+		for (std::string inputBuffer; std::getline(ss, inputBuffer, ' ');) {
+			if (inputBuffer.empty())
+				break ;
+			if (!validateNumber(inputBuffer))
+				throw std::runtime_error("Error: invalid input number");
+			int number = static_cast<int>(std::strtol(inputBuffer.c_str(), NULL, 10));
+			if (std::find(inputData.begin(), inputData.end(), number) != inputData.end())
+				throw std::runtime_error("Error: duplicate input number");
+			inputData.push_back(number);
+		}
+	}
+    if (inputData.size() < 1) {
+        throw std::runtime_error("Error: empty input data");
+    }
+	return inputData;
+}
 
 void PmergeMe::setSequence(std::vector<int> sequence) {
 	_vectorSequence = sequence;
@@ -73,7 +109,7 @@ void PmergeMe::mergePairVector(std::vector<std::pair<int, int> >& pairVector, in
 	}
 }
 
-size_t PmergeMe::binarySearchVector(std::vector<int> sorted, int left, int right, int key) {
+std::deque<int>::size_type PmergeMe::binarySearchVector(std::vector<int> sorted, int left, int right, int key) {
 	if (right <= left) {
 		if (key > sorted[left])
 			return left + 1;
@@ -114,7 +150,7 @@ void PmergeMe::mergeInsertionSortVector() {
 			prevPairIndex = getJacobsthalNumber(jacobIndex) - 1;
 		}
 		if (remainder != 0) {
-			size_t insertIndex = binarySearchVector(sortedSequence, 0, sortedSequence.size() - 1, remainder);
+			std::vector<int>::size_type insertIndex = binarySearchVector(sortedSequence, 0, sortedSequence.size() - 1, remainder);
 			sortedSequence.insert(sortedSequence.begin() + insertIndex, remainder);
 		}
 		_vectorSequence = sortedSequence;
@@ -179,7 +215,7 @@ void PmergeMe::mergePairDeque(std::deque<std::pair<int, int> >& pairDeque, int l
 	}
 }
 
-size_t PmergeMe::binarySearchDeque(std::deque<int> sorted, int left, int right, int key) {
+std::deque<int>::size_type PmergeMe::binarySearchDeque(std::deque<int> sorted, int left, int right, int key) {
 	if (right <= left) {
 		if (key > sorted[left])
 			return left + 1;
@@ -220,7 +256,7 @@ void PmergeMe::mergeInsertionSortDeque() {
 			prevPairIndex = getJacobsthalNumber(jacobIndex) - 1;
 		}
 		if (remainder != 0) {
-			size_t insertIndex = binarySearchDeque(sortedSequence, 0, sortedSequence.size() - 1, remainder);
+			std::deque<int>::size_type insertIndex = binarySearchDeque(sortedSequence, 0, sortedSequence.size() - 1, remainder);
 			sortedSequence.insert(sortedSequence.begin() + insertIndex, remainder);
 		}
 		_dequeSequence = sortedSequence;
@@ -257,6 +293,15 @@ void PmergeMe::printVectorTime() {
 void PmergeMe::printDequeTime() {
 	std::cout << "Time to process a range of " << _dequeSequence.size() <<
 	" elements with std::list : " << _dequeTime / CLOCKS_PER_SEC << " ms" << std::endl;
+}
+
+void PmergeMe::sortMe(int argc, char *argv[]) {
+	setSequence(validateInput(argc, argv));
+	printUnsorted();
+	mergeInsertionSortVector();
+	printSorted();
+	printVectorTime();
+	mergeInsertionSortDeque();
 }
 
 // void PmergeMe::printIsAscendingVector() {
