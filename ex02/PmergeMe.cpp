@@ -109,7 +109,7 @@ void PmergeMe::mergePairVector(std::vector<std::pair<int, int> >& pairVector, in
 	}
 }
 
-std::deque<int>::size_type PmergeMe::binarySearchVector(std::vector<int> sorted, int left, int right, int key) {
+std::vector<int>::size_type PmergeMe::binarySearchVector(std::vector<int> sorted, int left, int right, int key) {
 	if (right <= left) {
 		if (key > sorted[left])
 			return left + 1;
